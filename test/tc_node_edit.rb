@@ -145,6 +145,7 @@ class TestNodeEdit < Test::Unit::TestCase
 
     # Read in 500 documents
     500.times do
+      GC.start
       documents << XML::Parser.string(File.read(File.join(File.dirname(__FILE__), 'model', 'merge_bug_data.xml'))).parse
     end
 
