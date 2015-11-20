@@ -16,7 +16,7 @@ static ID IO_ATTR;
 
 /* OS X 10.5 ships with libxml2 version 2.6.16 which does not expose the
    htmlNewParserCtxt (or htmlInitParserCtxt which it uses) method.  htmlNewParserCtxt
-   wasn't added to the libxml2 header files until 2.6.27.  So the next two 
+   wasn't added to the libxml2 header files until 2.6.27.  So the next two
    methods are simply copied from a newer version of libxml2 (2.7.2). */
 #if LIBXML_VERSION < 20627
 #define XML_CTXT_FINISH_DTD_0 0xabcd1234
@@ -24,7 +24,7 @@ static int htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
 {
   htmlSAXHandler *sax;
   if (ctxt == NULL) return(-1);
-  
+
   memset(ctxt, 0, sizeof(htmlParserCtxt));
   ctxt->dict = xmlDictCreate();
   if (ctxt->dict == NULL) {
@@ -87,7 +87,7 @@ static int htmlInitParserCtxt(htmlParserCtxtPtr ctxt)
   ctxt->nameNr = 0;
   ctxt->nameMax = 10;
   ctxt->name = NULL;
-  	
+
   if (sax == NULL) ctxt->sax = (xmlSAXHandlerPtr) &htmlDefaultSAXHandler;
   else {
     ctxt->sax = sax;
@@ -153,7 +153,7 @@ static VALUE rxml_html_parser_context_file(VALUE klass, VALUE file)
   if (!ctxt)
     rxml_raise(&xmlLastError);
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -191,7 +191,7 @@ static VALUE rxml_html_parser_context_io(VALUE klass, VALUE io)
     rxml_raise(&xmlLastError);
   }
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -236,7 +236,7 @@ static VALUE rxml_html_parser_context_string(VALUE klass, VALUE string)
   if (!ctxt)
     rxml_raise(&xmlLastError);
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -245,7 +245,7 @@ static VALUE rxml_html_parser_context_string(VALUE klass, VALUE string)
   htmlDefaultSAXHandlerInit();
   if (ctxt->sax != NULL)
     memcpy(ctxt->sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandlerV1));
-  
+
   return rxml_html_parser_context_wrap(ctxt);
 }
 
@@ -276,7 +276,7 @@ static VALUE rxml_html_parser_context_close(VALUE self)
  *
  * Control whether the CDATA nodes will be created in this context.
  */
-static VALUE rxml_html_parser_context_disable_cdata_set(VALUE self, VALUE bool)
+static VALUE rxml_html_parser_context_disable_cdata_set(VALUE self, VALUE mybool)
 {
   htmlParserCtxtPtr ctxt;
   Data_Get_Struct(self, htmlParserCtxt, ctxt);
@@ -284,13 +284,13 @@ static VALUE rxml_html_parser_context_disable_cdata_set(VALUE self, VALUE bool)
   if (ctxt->sax == NULL)
     rb_raise(rb_eRuntimeError, "Sax handler is not yet set");
 
-  /* LibXML controls this internally with the default SAX handler. */ 
-  if (bool)
+  /* LibXML controls this internally with the default SAX handler. */
+  if (mybool)
     ctxt->sax->cdataBlock = NULL;
   else
     ctxt->sax->cdataBlock = htmlDefaultSAXHandler.cdataBlock;
 
-  return bool;
+  return mybool;
 }
 
 /*
@@ -298,7 +298,7 @@ static VALUE rxml_html_parser_context_disable_cdata_set(VALUE self, VALUE bool)
  *    context.options = XML::Parser::Options::NOENT |
                         XML::Parser::Options::NOCDATA
  *
- * Provides control over the execution of a parser.  Valid values 
+ * Provides control over the execution of a parser.  Valid values
  * are the constants defined on XML::Parser::Options.  Multiple
  * options can be combined by using Bitwise OR (|).
  */
@@ -315,7 +315,7 @@ static VALUE rxml_html_parser_context_options_set(VALUE self, VALUE options)
 #if LIBXML_VERSION >= 20707
   /* Big hack here, but htmlCtxtUseOptions doens't support HTML_PARSE_NOIMPLIED.
      So do it ourselves. There must be a better way??? */
-  if (xml_options & HTML_PARSE_NOIMPLIED) 
+  if (xml_options & HTML_PARSE_NOIMPLIED)
   {
 	  ctxt->options |= HTML_PARSE_NOIMPLIED;
   }

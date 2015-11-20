@@ -31,7 +31,7 @@ VALUE cXMLNode;
  *
  * In general use, this will cause Ruby nodes to be freed before
  * a libxml document.  When a Ruby node is freed, the _private
- * field is set back to null.  
+ * field is set back to null.
  *
  * In the sweep phase in Ruby 1.9.*, the document tends to be
  * freed before the nodes.  To support this, the bindings register
@@ -58,7 +58,7 @@ static void rxml_node_deregisterNode(xmlNodePtr xnode)
 static void rxml_node_free(xmlNodePtr xnode)
 {
   /* Either the node has been created yet in initialize
-     or it has been freed by libxml already in Ruby's 
+     or it has been freed by libxml already in Ruby's
      mark phase. */
   if (xnode == NULL)
     return;
@@ -79,14 +79,14 @@ static void rxml_node_free(xmlNodePtr xnode)
  void rxml_node_mark(xmlNodePtr xnode)
 {
   /* Either the node has not been created yet in initialize
-     or it has been freed by libxml already in Ruby's 
+     or it has been freed by libxml already in Ruby's
      mark phase. */
   if (xnode == NULL)
     return;
 
   if (xnode->doc && xnode->doc->_private)
     rb_gc_mark((VALUE) xnode->doc->_private);
-  
+
   if (xnode->parent && xnode->parent->_private)
     rb_gc_mark((VALUE) xnode->_private);
 }
@@ -301,7 +301,7 @@ static VALUE rxml_node_modify_dom(VALUE self, VALUE target,
 
   xmlUnlinkNode(xtarget);
 
-  /* This target node could be freed here. */  
+  /* This target node could be freed here. */
   xresult = xmlFunc(xnode, xtarget);
 
   if (!xresult)
@@ -476,16 +476,16 @@ static VALUE rxml_node_first_get(VALUE self)
 
 /*
  * call-seq:
- *   curr_node << "Some text" 
+ *   curr_node << "Some text"
  *   curr_node << node
  *
- * Add  the specified text or XML::Node as a new child node to the 
+ * Add  the specified text or XML::Node as a new child node to the
  * current node.
  *
- * If the specified argument is a string, it should be a raw string 
- * that contains unescaped XML special characters.  Entity references 
+ * If the specified argument is a string, it should be a raw string
+ * that contains unescaped XML special characters.  Entity references
  * are not supported.
- * 
+ *
  * The method will return the current node.
  */
 static VALUE rxml_node_content_add(VALUE self, VALUE obj)
@@ -500,7 +500,7 @@ static VALUE rxml_node_content_add(VALUE self, VALUE obj)
    * danj 070827
    */
   if (rb_obj_is_kind_of(obj, cXMLNode))
-  { 
+  {
     rxml_node_modify_dom(self, obj, xmlAddChild);
   }
   else
@@ -558,9 +558,9 @@ static VALUE rxml_node_doc(VALUE self)
  * To include only the node's children, use the the XML::Node#inner_xml
  * method.
  *
- * You may provide an optional hash table to control how the string is 
+ * You may provide an optional hash table to control how the string is
  * generated.  Valid options are:
- * 
+ *
  * :indent - Specifies if the string should be indented.  The default value
  * is true.  Note that indentation is only added if both :indent is
  * true and XML.indent_tree_output is true.  If :indent is set to false,
@@ -632,7 +632,7 @@ static VALUE rxml_node_to_s(int argc, VALUE *argv, VALUE self)
 #endif
 
   xmlOutputBufferClose(output);
-  
+
   return result;
 }
 
@@ -969,8 +969,8 @@ static VALUE rxml_node_next_get(VALUE self)
  *
  * Adds the specified node as the next sibling of the current node.
  * If the node already exists in the document, it is first removed
- * from its existing context.  Any adjacent text nodes will be 
- * merged together, meaning the returned node may be different 
+ * from its existing context.  Any adjacent text nodes will be
+ * merged together, meaning the returned node may be different
  * than the original node.
  */
 static VALUE rxml_node_next_set(VALUE self, VALUE next)
@@ -1072,8 +1072,8 @@ static VALUE rxml_node_prev_get(VALUE self)
  *
  * Adds the specified node as the previous sibling of the current node.
  * If the node already exists in the document, it is first removed
- * from its existing context.  Any adjacent text nodes will be 
- * merged together, meaning the returned node may be different 
+ * from its existing context.  Any adjacent text nodes will be
+ * merged together, meaning the returned node may be different
  * than the original node.
  */
 static VALUE rxml_node_prev_set(VALUE self, VALUE prev)
@@ -1126,7 +1126,7 @@ static VALUE rxml_node_property_set(VALUE self, VALUE name, VALUE value)
  *
  * Removes this node and its children from the document tree by setting its document,
  * parent and siblings to nil.  You can add the returned node back into a document.
- * Otherwise, the node will be freed once any references to it go out of scope. 
+ * Otherwise, the node will be freed once any references to it go out of scope.
  */
 
 static VALUE rxml_node_remove_ex(VALUE self)
@@ -1150,7 +1150,7 @@ static VALUE rxml_node_remove_ex(VALUE self)
   RDATA(self)->data = NULL;
 
   /* Now free the original node.  This will call the deregister node
-    callback which would reset the mark and free function except for 
+    callback which would reset the mark and free function except for
 	the fact we set the _private field to null above*/
   xmlFreeNode(xnode);
 
@@ -1168,7 +1168,7 @@ static VALUE rxml_node_remove_ex(VALUE self)
  *    curr_node.sibling = node
  *
  * Adds the specified node as the end of the current node's list
- * of siblings.  If the node already exists in the document, it 
+ * of siblings.  If the node already exists in the document, it
  * is first removed from its existing context.  Any adjacent text
  * nodes will be  merged together, meaning the returned node may
  * be different than the original node.
@@ -1191,7 +1191,7 @@ static VALUE rxml_node_sibling_set(VALUE self, VALUE sibling)
  * examine their immediate text node children to determine the value.
  * Any other type of node always returns +nil+.
  *
- * If an element or attribute node has at least one immediate child text node 
+ * If an element or attribute node has at least one immediate child text node
  * and all the immediate text node children have the same +output_escaping?+
  * value, that value is returned.  Otherwise, +nil+ is returned.
  */
@@ -1242,19 +1242,19 @@ static VALUE rxml_node_output_escaping_q(VALUE self)
  * Text nodes which are added to an element or attribute node will be affected
  * by any previous setting of this property.
  */
-static VALUE rxml_node_output_escaping_set(VALUE self, VALUE bool)
+static VALUE rxml_node_output_escaping_set(VALUE self, VALUE mybool)
 {
   xmlNodePtr xnode;
   xnode = rxml_get_xnode(self);
 
   switch (xnode->type) {
   case XML_TEXT_NODE:
-    xnode->name = (bool!=Qfalse && bool!=Qnil) ? xmlStringText : xmlStringTextNoenc;
+    xnode->name = (mybool!=Qfalse && mybool!=Qnil) ? xmlStringText : xmlStringTextNoenc;
     break;
   case XML_ELEMENT_NODE:
   case XML_ATTRIBUTE_NODE:
     {
-      const xmlChar *name = (bool!=Qfalse && bool!=Qnil) ? xmlStringText : xmlStringTextNoenc;
+      const xmlChar *name = (mybool!=Qfalse && mybool!=Qnil) ? xmlStringText : xmlStringTextNoenc;
       xmlNodePtr tmp;
       for (tmp = xnode->children; tmp; tmp = tmp->next)
         if (tmp->type == XML_TEXT_NODE)
@@ -1265,7 +1265,7 @@ static VALUE rxml_node_output_escaping_set(VALUE self, VALUE bool)
     return Qnil;
   }
 
-  return (bool!=Qfalse && bool!=Qnil) ? Qtrue : Qfalse;
+  return (mybool!=Qfalse && mybool!=Qnil) ? Qtrue : Qfalse;
 }
 
 /*
@@ -1288,12 +1288,12 @@ static VALUE rxml_node_space_preserve_get(VALUE self)
  *
  * Control whether this node preserves whitespace.
  */
-static VALUE rxml_node_space_preserve_set(VALUE self, VALUE bool)
+static VALUE rxml_node_space_preserve_set(VALUE self, VALUE mybool)
 {
   xmlNodePtr xnode;
   xnode = rxml_get_xnode(self);
 
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
     xmlNodeSetSpacePreserve(xnode, 0);
   else
     xmlNodeSetSpacePreserve(xnode, 1);

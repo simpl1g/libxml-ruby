@@ -43,7 +43,7 @@ static VALUE rxml_parser_context_document(VALUE klass, VALUE document)
 {
   xmlParserCtxtPtr ctxt;
   xmlDocPtr xdoc;
-  xmlChar *buffer; 
+  xmlChar *buffer;
   int length;
 
   if (rb_obj_is_kind_of(document, cXMLDocument) == Qfalse)
@@ -57,7 +57,7 @@ static VALUE rxml_parser_context_document(VALUE klass, VALUE document)
   if (!ctxt)
     rxml_raise(&xmlLastError);
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -82,7 +82,7 @@ static VALUE rxml_parser_context_file(VALUE klass, VALUE file)
   if (!ctxt)
     rxml_raise(&xmlLastError);
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -110,11 +110,11 @@ static VALUE rxml_parser_context_string(VALUE klass, VALUE string)
 
   ctxt = xmlCreateMemoryParserCtxt(StringValuePtr(string),
                                    RSTRING_LEN(string));
-  
+
   if (!ctxt)
     rxml_raise(&xmlLastError);
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -144,7 +144,7 @@ static VALUE rxml_parser_context_io(VALUE klass, VALUE io)
 
   input = xmlParserInputBufferCreateIO((xmlInputReadCallback) rxml_read_callback, NULL,
                                        (void*)io, XML_CHAR_ENCODING_NONE);
-    
+
   ctxt = xmlNewParserCtxt();
 
   if (!ctxt)
@@ -153,7 +153,7 @@ static VALUE rxml_parser_context_io(VALUE klass, VALUE io)
     rxml_raise(&xmlLastError);
   }
 
-  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and 
+  /* This is annoying, but xmlInitParserCtxt (called indirectly above) and
      xmlCtxtUseOptionsInternal (called below) initialize slightly different
      context options, in particular XML_PARSE_NODICT which xmlInitParserCtxt
      sets to 0 and xmlCtxtUseOptionsInternal sets to 1.  So we have to call both. */
@@ -290,7 +290,7 @@ static VALUE rxml_parser_context_disable_cdata_q(VALUE self)
  *
  * Control whether CDATA nodes will be created in this context.
  */
-static VALUE rxml_parser_context_disable_cdata_set(VALUE self, VALUE bool)
+static VALUE rxml_parser_context_disable_cdata_set(VALUE self, VALUE mybool)
 {
   xmlParserCtxtPtr ctxt;
   Data_Get_Struct(self, xmlParserCtxt, ctxt);
@@ -298,13 +298,13 @@ static VALUE rxml_parser_context_disable_cdata_set(VALUE self, VALUE bool)
   if (ctxt->sax == NULL)
     rb_raise(rb_eRuntimeError, "Sax handler is not yet set");
 
-  /* LibXML controls this internally with the default SAX handler. */ 
-  if (bool)
+  /* LibXML controls this internally with the default SAX handler. */
+  if (mybool)
     ctxt->sax->cdataBlock = NULL;
   else
     ctxt->sax->cdataBlock = xmlDefaultSAXHandler.cdataBlock;
 
-  return bool;
+  return mybool;
 }
 
 /*
@@ -368,7 +368,7 @@ static VALUE rxml_parser_context_encoding_set(VALUE self, VALUE encoding)
   int result;
   const char* xencoding = xmlGetCharEncodingName((xmlCharEncoding)NUM2INT(encoding));
   xmlCharEncodingHandlerPtr hdlr = xmlFindCharEncodingHandler(xencoding);
-  
+
   if (!hdlr)
     rb_raise(rb_eArgError, "Unknown encoding: %i", NUM2INT(encoding));
 
@@ -620,7 +620,7 @@ static VALUE rxml_parser_context_options_get(VALUE self)
  *    context.options = XML::Parser::Options::NOENT |
                         XML::Parser::Options::NOCDATA
  *
- * Provides control over the execution of a parser.  Valid values 
+ * Provides control over the execution of a parser.  Valid values
  * are the constants defined on XML::Parser::Options.  Multiple
  * options can be combined by using Bitwise OR (|).
  */
@@ -661,12 +661,12 @@ static VALUE rxml_parser_context_recovery_q(VALUE self)
  * Control whether recovery mode is enabled in this
  * context.
  */
-static VALUE rxml_parser_context_recovery_set(VALUE self, VALUE bool)
+static VALUE rxml_parser_context_recovery_set(VALUE self, VALUE mybool)
 {
   xmlParserCtxtPtr ctxt;
   Data_Get_Struct(self, xmlParserCtxt, ctxt);
 
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     ctxt->recovery = 0;
     return (Qfalse);
@@ -703,12 +703,12 @@ static VALUE rxml_parser_context_replace_entities_q(VALUE self)
  * Control whether external entity replacement is enabled in this
  * context.
  */
-static VALUE rxml_parser_context_replace_entities_set(VALUE self, VALUE bool)
+static VALUE rxml_parser_context_replace_entities_set(VALUE self, VALUE mybool)
 {
   xmlParserCtxtPtr ctxt;
   Data_Get_Struct(self, xmlParserCtxt, ctxt);
 
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     ctxt->replaceEntities = 0;
     return (Qfalse);

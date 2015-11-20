@@ -353,10 +353,10 @@ static VALUE rxml_debug_entities_get(VALUE klass)
  * Enable or disable included-entity debugging.
  * (Requires Libxml to be compiled with debugging support)
  */
-static VALUE rxml_debug_entities_set(VALUE klass, VALUE bool)
+static VALUE rxml_debug_entities_set(VALUE klass, VALUE mybool)
 {
 #ifdef LIBXML_DEBUG_ENABLED
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     xmlParserDebugEntities = 0;
     return(Qfalse);
@@ -391,14 +391,14 @@ static VALUE rxml_default_keep_blanks_get(VALUE klass)
  *
  * Controls whether parsers retain whitespace by default.
  */
-static VALUE rxml_default_keep_blanks_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_keep_blanks_set(VALUE klass, VALUE mybool)
 {
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     xmlKeepBlanksDefaultValue = 0;
     return (Qfalse);
   }
-  else if (TYPE(bool) == T_TRUE)
+  else if (TYPE(mybool) == T_TRUE)
   {
     xmlKeepBlanksDefaultValue = 1;
     return (Qtrue);
@@ -429,9 +429,9 @@ static VALUE rxml_default_load_external_dtd_get(VALUE klass)
  *
  * Controls whether parsers load external DTDs by default.
  */
-static VALUE rxml_default_load_external_dtd_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_load_external_dtd_set(VALUE klass, VALUE mybool)
 {
-  if (bool == Qfalse)
+  if (mybool == Qfalse)
   {
     xmlLoadExtDtdDefaultValue = 0;
     return (Qfalse);
@@ -463,9 +463,9 @@ static VALUE rxml_default_line_numbers_get(VALUE klass)
  *
  * Controls whether parsers retain line-numbers by default.
  */
-static VALUE rxml_default_line_numbers_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_line_numbers_set(VALUE klass, VALUE mybool)
 {
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     xmlLineNumbersDefault(0);
     return (Qfalse);
@@ -498,7 +498,7 @@ int rxml_libxml_default_options()
 
   if (xmlPedanticParserDefaultValue)
     options |= XML_PARSE_PEDANTIC;
-  
+
   return options;
 }
 
@@ -534,9 +534,9 @@ static VALUE rxml_default_pedantic_parser_get(VALUE klass)
  *
  * Controls whether parsers are pedantic by default.
  */
-static VALUE rxml_default_pedantic_parser_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_pedantic_parser_set(VALUE klass, VALUE mybool)
 {
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     xmlPedanticParserDefault(0);
     return (Qfalse);
@@ -570,9 +570,9 @@ static VALUE rxml_default_substitute_entities_get(VALUE klass)
  * Controls whether parsers perform inline entity substitution
  * (for external entities) by default.
  */
-static VALUE rxml_default_substitute_entities_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_substitute_entities_set(VALUE klass, VALUE mybool)
 {
-  if (bool == Qfalse)
+  if (mybool == Qfalse)
   {
     xmlSubstituteEntitiesDefault(0);
     return (Qfalse);
@@ -633,9 +633,9 @@ static VALUE rxml_default_validity_checking_get(VALUE klass)
  *
  * Controls whether parsers perform XML validation by default.
  */
-static VALUE rxml_default_validity_checking_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_validity_checking_set(VALUE klass, VALUE mybool)
 {
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     xmlDoValidityCheckingDefaultValue = 0;
     return (Qfalse);
@@ -667,9 +667,9 @@ static VALUE rxml_default_warnings_get(VALUE klass)
  *
  * Controls whether parsers output warnings by default.
  */
-static VALUE rxml_default_warnings_set(VALUE klass, VALUE bool)
+static VALUE rxml_default_warnings_set(VALUE klass, VALUE mybool)
 {
-  if (TYPE(bool) == T_FALSE)
+  if (TYPE(mybool) == T_FALSE)
   {
     xmlGetWarningsDefaultValue = 0;
     return (Qfalse);
@@ -774,14 +774,14 @@ static VALUE rxml_indent_tree_output_get(VALUE klass)
  * Controls whether XML output will be indented
  * (using the string supplied to +default_indent_tree_string+)
  */
-static VALUE rxml_indent_tree_output_set(VALUE klass, VALUE bool)
+static VALUE rxml_indent_tree_output_set(VALUE klass, VALUE mybool)
 {
-  if (TYPE(bool) == T_TRUE)
+  if (TYPE(mybool) == T_TRUE)
   {
     xmlIndentTreeOutput = 1;
     return (Qtrue);
   }
-  else if (TYPE(bool) == T_FALSE)
+  else if (TYPE(mybool) == T_FALSE)
   {
     xmlIndentTreeOutput = 0;
     return (Qfalse);
